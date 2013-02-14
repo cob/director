@@ -1,8 +1,8 @@
 
 
 //
-// Generated on Sun Dec 16 2012 22:47:05 GMT-0500 (EST) by Nodejitsu, Inc (Using Codesurgeon).
-// Version 1.1.9
+// Generated on Thu Feb 14 2013 10:52:10 GMT+0000 (WET) by Nodejitsu, Inc (Using Codesurgeon).
+// Version 1.1.10
 //
 
 (function (exports) {
@@ -232,6 +232,8 @@ Router.prototype.init = function (r) {
 Router.prototype.explode = function () {
   var v = this.history === true ? this.getPath() : dloc.hash;
   if (v.charAt(1) === '/') { v=v.slice(1) }
+  //ignore query parameters
+  v = v.split("?")[0];
   return v.slice(1, v.length).split("/");
 };
 
@@ -450,7 +452,7 @@ Router.prototype.on = Router.prototype.route = function(method, path, route) {
 };
 
 Router.prototype.dispatch = function(method, path, callback) {
-  var self = this, fns = this.traverse(method, path, this.routes, ""), invoked = this._invoked, after;
+  var self = this, fns = this.traverse(method, path.split("?")[0], this.routes, ""), invoked = this._invoked, after;
   this._invoked = true;
   if (!fns || fns.length === 0) {
     this.last = [];
